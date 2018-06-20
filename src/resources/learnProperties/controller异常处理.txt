@@ -1,0 +1,79 @@
+controller错误统一处理--------@ExceptionHandler
+用@RequestBody，@ResponseBody，不费吹灰之力就解决了JSon自动绑定。接着就发现，如果遇到RuntimeException，需要给出一个默认返回JSON
+
+三种方式：
+
+1.当这个Controller中任何一个方法发生异常，一定会被这个方法拦截到。然后，输出日志。封装Map并返回，页面上得到status为false。就这么简单。
+
+代码如下
+
+
+
+复制代码
+ 1 @Controller
+ 2 public class AccessController {
+ 3
+ 4     /**
+ 5      * 异常页面控制
+ 6      *
+ 7      * @param runtimeException
+ 8      * @return
+ 9      */
+10     @ExceptionHandler(RuntimeException.class)
+11     public @ResponseBody
+12     Map<String,Object> runtimeExceptionHandler(RuntimeException runtimeException) {
+13         logger.error(runtimeException.getLocalizedMessage());
+14
+15         Map model = new TreeMap();
+16         model.put("status", false);
+17         return model;
+18     }
+19
+20 }
+复制代码
+2.返回到错误界面
+
+代码如下
+
+复制代码
+ 1     @Controller
+ 2     public class AccessController {
+ 3         /**
+ 4          * 异常页面控制
+ 5          *
+ 6          * @param runtimeException
+ 7          * @return
+ 8          */
+ 9         @ExceptionHandler(RuntimeException.class)
+10         public String runtimeExceptionHandler(RuntimeException runtimeException,
+11                 ModelMap modelMap) {
+12             logger.error(runtimeException.getLocalizedMessage());
+13
+14             modelMap.put("status", IntegralConstant.FAIL_STATUS);
+15             return "exception";
+16         }
+17     }
+复制代码
+3.使用 @ControllerAdvice，不用任何的配置，只要把这个类放在项目中，Spring能扫描到的地方。就可以实现全局异常的回调。
+
+代码如下
+
+复制代码
+    @ControllerAdvice
+    public class SpringExceptionHandler{
+      /**
+         * 全局处理Exception
+         * 错误的情况下返回500
+         * @param ex
+         * @param req
+         * @return
+         */
+        @ExceptionHandler(value = {Exception.class})
+        public ResponseEntity<Object> handleOtherExceptions(final Exception ex, final WebRequest req) {
+            TResult tResult = new TResult();
+            tResult.setStatus(CodeType.V_500);
+            tResult.setErrorMessage(ex.getMessage());
+            return new ResponseEntity<Object>(tResult,HttpStatus.OK);
+        }
+
+    }  
