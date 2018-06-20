@@ -4,13 +4,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/context
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -22,113 +20,19 @@
         http://www.springframework.org/schema/cache/spring-cache.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!-- 启用spring mvc 注解 -->
     <context:annotation-config/>
     <!-- 设置使用注解的类所在的jar包 -->
     <context:component-scan base-package="com.qi"/>
     <!-- 启用annotation -->
     <mvc:annotation-driven />
-    <!-- 视图渲染器 -->
-   <!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/WEB-INF/jsps/" />
-        <property name="suffix" value=".jsp" />
-        <property name="order" value="2" />
-        <property name="viewNames" value="*jsp" />
-    </bean>-->
     <!-- DispatcherServlet不处理静态资源,交给服务器默认的servlet处理 -->
     <mvc:default-servlet-handler />
     <!--<mvc:resources location="/static/" mapping="/static/**" />
     <mvc:resources location="/images/" mapping="/images/**" />
   <mvc:resources location="/css/" mapping="/css/**" -->
-    <!-- 模板解析器  -->
-    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
-        <property name="prefix" value="classpath:/templates/"/>
-        <property name="suffix" value=".html"/>
-        <property name="templateMode" value="HTML"/>
-        <property name="characterEncoding" value="UTF-8"/>
-        <property name="cacheable" value="false"/>
-    </bean>
-
-    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
-        <property name="templateResolver" ref="templateResolver" />
-    </bean>
-
-    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine" />
-        <property name="characterEncoding"  value="UTF-8" />
-    </bean>
-    <!-- 配置数据源 -->
-    <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test" />
-        <property name="username" value="root"></property>
-        <property name="password" value="root"></property>
-        &lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
-        <property name="initialSize" value="1" />
-        <property name="minIdle" value="1" />
-        <property name="maxActive" value="20" />
-        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
-        <property name="maxWait" value="60000" />
-        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
-        <property name="timeBetweenEvictionRunsMillis" value="60000" />
-        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
-        <property name="minEvictableIdleTimeMillis" value="300000" />
-        <property name="validationQuery" value="SELECT 'x'" />
-        <property name="testWhileIdle" value="true" />
-        <property name="testOnBorrow" value="false" />
-        <property name="testOnReturn" value="false" />
-        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 &ndash;&gt;
-        <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-        &lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;
-        <property name="filters" value="wall,stat" />
-    </bean>
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
-        &lt;!&ndash; <property name="hibernateProperties">
-             <value>
-                 hibernate.dialect=org.hibernate.dialect.MySQLDialect
-                 &lt;!&ndash; hibernate.dialect=org.hibernate.dialect.SQLServerDialect &ndash;&gt;
-                 hibernate.show_sql=true
-             </value>
-         </property>&ndash;&gt;
-        <property name="hibernateProperties">
-            <value>
-                hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-                &lt;!&ndash;<prop key="hibernate.hbm2ddl.auto">create</prop>自动创建表结构&ndash;&gt;
-                &lt;!&ndash;<prop key="hibernate.hbm2ddl.auto">update</prop> 自动更新表结构&ndash;&gt;
-                hibernate.show_sql=true
-                hibernate.format_sql=true
-            </value>
-        </property>
-        &lt;!&ndash; //加载实体类的映射文件位置及名称 &ndash;&gt;
-        &lt;!&ndash;<property name="mappingLocations" value="classpath:config/*.hbm.xml"></property>&ndash;&gt;
-        <property name="packagesToScan" value="com.qi.entity" />
-    </bean>
-    <bean id="transactionManager"
-          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
-
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />
-        </tx:attributes>
-    </tx:advice>
-
-    <aop:config>
-        <aop:pointcut id="daoMethod" expression="execution(* com.qi.service.*.*(..))" />
-        <aop:advisor pointcut-ref="daoMethod" advice-ref="txAdvice" />
-    </aop:config>
--->
-    <!-- 开户事务注解功能 -->
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
 </beans>
