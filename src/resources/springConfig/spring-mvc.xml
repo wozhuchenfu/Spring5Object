@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 启用spring mvc 注解 -->
+    <context:annotation-config/>
+    <!-- 设置使用注解的类所在的jar包 -->
+    <context:component-scan base-package="com.qi"/>
+    <!-- 启用annotation -->
+    <mvc:annotation-driven />
+    <!-- DispatcherServlet不处理静态资源,交给服务器默认的servlet处理 -->
+    <mvc:default-servlet-handler />
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <bean class="com.qi.logControllers.RequestLogs" />
+    <!--<mvc:resources location="/static/" mapping="/static/**" />
+    <mvc:resources location="/images/" mapping="/images/**" />
+  <mvc:resources location="/css/" mapping="/css/**" -->
+
+    <!--spring主题配置-->
+    <!--设置主题名称为每个用户在HttpSession内保存。-->
+    <!--设置主题文件为summer.springConfig，在整个项目内固定不变。-->
+    <!--<bean id="themeResolver1" class="org.springframework.web.servlet.theme.CookieThemeResolver">
+        <property name="defaultThemeName" value="summer"/>
+    </bean>-->
+    <!--设置主题名称为每个用户在HttpSession内保存。-->
+    <!--<bean id="themeResolver2" class="org.springframework.web.servlet.theme.SessionThemeResolver">
+        <property name="defaultThemeName" value="summer"/>
+    </bean>-->
+    <!--固定主题-->
+    <!--<bean id="themeResolver" class="org.springframework.web.servlet.theme.FixedThemeResolver">
+        <property name="defaultThemeName" value="summer"/>
+    </bean>-->
+    <!--如果需要根据用户请求来改变主题，则需要使用ThemeChangeInterceptor拦截器了。-->
+    <!--<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+        <property name="paramName" value="themeName"></property>
+    </bean>-->
+    <!--其中设置用户请求参数名为themeName,即url为？themeName=具体的主题名称。此外，还需要在handlerMapping中配置拦截器-->
+    <!--<bean id="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors" >
+            <list>
+                <ref local="themeChangeInterceptor"></ref>
+            </list>
+        </property>
+    </bean>-->
+</beans>
