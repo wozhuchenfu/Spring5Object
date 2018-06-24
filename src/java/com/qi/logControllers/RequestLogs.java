@@ -1,7 +1,6 @@
 package com.qi.logControllers;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jsoniter.JsonIterator;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -15,7 +14,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +31,7 @@ public class RequestLogs {
     private long endTimeMillis = 0; // 结束时间
 
     /**
-     *
-     * @Title：doBeforeInServiceLayer
-     * @Description: 方法调用前触发
-     *  记录开始时间
-     * @author shaojian.yu
-     * @date 2014年11月2日 下午4:45:53
+     * 方法调用前触发
      * @param joinPoint
      */
     @Before("execution(* com.qi.controllers.*.*(..))")
@@ -51,8 +44,6 @@ public class RequestLogs {
      * @Title：doAfterInServiceLayer
      * @Description: 方法调用后触发
      *  记录结束时间
-     * @author shaojian.yu
-     * @date 2014年11月2日 下午4:46:21
      * @param joinPoint
      */
     @After("execution(* com.qi.controllers.*.*(..))")
@@ -65,8 +56,6 @@ public class RequestLogs {
      *
      * @Title：doAround
      * @Description: 环绕触发
-     * @author shaojian.yu
-     * @date 2014年11月3日 下午1:58:45
      * @param pjp
      * @return
      * @throws Throwable
@@ -105,8 +94,6 @@ public class RequestLogs {
      *
      * @Title：printOptLog
      * @Description: 输出日志
-     * @author shaojian.yu
-     * @date 2014年11月2日 下午4:47:09
      */
     private void printOptLog() {
         JSONObject jsonObject = new JSONObject();
