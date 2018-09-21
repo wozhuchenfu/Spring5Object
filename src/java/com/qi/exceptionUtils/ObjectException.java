@@ -1,5 +1,7 @@
 package com.qi.exceptionUtils;
+import lombok.Data;
 
+@Data
 public class ObjectException extends RuntimeException {
     private BizError errorCode;
     private String errorMessage;

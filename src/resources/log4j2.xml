@@ -4,7 +4,7 @@
 
     <Properties>
         <!-- 配置日志文件输出目录 -->
-        <Property name="LOG_PATH">C:/Users/edianzu/Desktop/bealog</Property>
+        <Property name="LOG_PATH">/usr/local/log</Property>
     </Properties>
 
     <appenders>
