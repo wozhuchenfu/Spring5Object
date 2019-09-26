@@ -17,6 +17,6 @@ public class KafkaProcucer {
     @Autowired
     private KafkaService kafkaService;
     public void send(String message){
-        kafkaService.sendDataToTopic("topic1","hello");
+        kafkaService.sendDataToTopic("topic1",message);
     }
 }

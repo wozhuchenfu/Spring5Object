@@ -128,12 +128,13 @@ public class KafkaConfig {
         containerProperties.setMessageListener(new AcknowledgingMessageListener() {
             @Override
             public void onMessage(Object o) {
-
+                System.out.println(o.toString());
             }
 
             @Override
             public void onMessage(ConsumerRecord consumerRecord, Acknowledgment acknowledgment) {
-
+                System.out.println("consumerRecord:======="+consumerRecord.toString());
+                System.out.println("acknowledgment:======="+acknowledgment.toString());
             }
         });
         return new KafkaMessageListenerContainer(consumerFactory(),containerProperties);

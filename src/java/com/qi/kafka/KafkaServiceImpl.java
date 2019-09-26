@@ -7,6 +7,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
@@ -30,6 +31,9 @@ public class KafkaServiceImpl implements KafkaService {
 
     @Autowired
     private KafkaConfig kafkaConfig;
+
+    @Autowired
+    private KafkaMessageListenerContainer kafkaMessageListenerContainer;
 
     @Override
     public Boolean isExistTopic(String topicname) {
@@ -88,6 +92,5 @@ public class KafkaServiceImpl implements KafkaService {
             return false;
         }
     }
-
 
 }
